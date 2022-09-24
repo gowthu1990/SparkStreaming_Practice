@@ -2,7 +2,7 @@ package com.clearurdoubt.streaming
 
 import com.clearurdoubt.common.SparkUtils
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col, length}
+import org.apache.spark.sql.functions.count
 import org.apache.spark.sql.streaming.Trigger
 
 import scala.concurrent.duration.DurationInt
@@ -17,12 +17,12 @@ object StreamingDFs {
       .load()
 
     val transformedDF: DataFrame = df
-      .withColumn("input", col("value"))
-      .filter(length(col("input")) > 5)
+      .withColumnRenamed("value","input")
+      .groupBy("input").agg(count("input").as("count"))
 
     transformedDF.writeStream
       .format("console")
-      .outputMode("append")
+      .outputMode("complete") // append and update are not not supported with aggregations
       .trigger(Trigger.ProcessingTime(2.seconds))
       .start()
       .awaitTermination()
