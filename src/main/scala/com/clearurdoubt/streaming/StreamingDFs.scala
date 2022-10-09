@@ -108,7 +108,7 @@ object StreamingDFs {
           session.execute(
             s"""
                |INSERT INTO $keyspace.$table("id", "name", "year")
-               |VALUES(${student.id.orNull}, '${student.name}', '${student.year}')
+               |VALUES(${student.id.orNull}, '${student.name.orNull}', '${student.year.orNull}')
                |""".stripMargin
           )
         })
