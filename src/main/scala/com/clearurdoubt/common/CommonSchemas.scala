@@ -6,6 +6,6 @@ object CommonSchemas {
   val studentSchema: StructType = StructType(Array(
     StructField("name", StringType, nullable = true),
     StructField("id", IntegerType, nullable = true),
-    StructField("class", StringType, nullable = true)
+    StructField("year", StringType, nullable = true)
   ))
 }
